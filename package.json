@@ -5,12 +5,19 @@
   "main": "index.js",
   "module": "index.js",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./dist": "./dist.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup --config ./build.js"
   },
-  "keywords": ["alien-signals", "Preact", "signals", "reactive", "reactivity"],
+  "keywords": [
+    "alien-signals",
+    "Preact",
+    "signals",
+    "reactive",
+    "reactivity"
+  ],
   "author": "Andrea Giammarchi",
   "license": "MIT",
   "dependencies": {
@@ -24,5 +31,10 @@
     "url": "https://github.com/WebReflection/alien-signals/issues"
   },
   "homepage": "https://github.com/WebReflection/alien-signals#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.40.0"
+  }
 }
