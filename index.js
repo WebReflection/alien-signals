@@ -1,5 +1,13 @@
 export * from 'alien-signals';
-import { signal, computed, pauseTracking, resumeTracking } from 'alien-signals';
+
+import {
+  signal as _signal,
+  computed as _computed,
+  pauseTracking, resumeTracking,
+} from 'alien-signals';
+
+export const computed = value => new Computed(value);
+export const signal = value => new State(value);
 
 /**
  * @template T
@@ -18,7 +26,7 @@ export const untracked = fn => {
 /**
  * @template T
  */
-export class Reactive {
+export class Signal {
   /**
    * @param {(value: T) => T} fn
    * @param {T} value
@@ -41,12 +49,12 @@ export class Reactive {
 /**
  * @template T
  */
-export class Signal extends Reactive {
+export class State extends Signal {
   /**
    * @param {T} value
    */
   constructor(value) {
-    super(signal, value);
+    super(_signal, value);
   }
 
   /** @returns {T} */
@@ -63,10 +71,10 @@ export class Signal extends Reactive {
 /**
  * @template T
  */
-export class Computed extends Reactive {
+export class Computed extends Signal {
   /** @param {T} value */
   constructor(value) {
-    super(computed, value);
+    super(_computed, value);
   }
 
   /** @returns {T} */

@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script type="module">
+# @webreflection/alien-signals
+
+[alien-signals](https://github.com/stackblitz/alien-signals) with a [Preact signals](https://preactjs.com/guide/v10/signals/) like API and a class based approach for easy brand check.
+
+```js
 import {
   Signal,
   signal, computed,
   effect, untracked,
   // all other alien-signals exports
-} from './dist.js';
+} from '@webreflection/alien-signals';
 
 const count = signal(0);
 const double = computed(() => count * 2);
@@ -26,6 +25,4 @@ effect(() => {
 });
 
 count.value++;
-  </script>
-</head>
-</html>
+```

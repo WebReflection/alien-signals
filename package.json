@@ -31,7 +31,7 @@
     "url": "https://github.com/WebReflection/alien-signals/issues"
   },
   "homepage": "https://github.com/WebReflection/alien-signals#readme",
-  "description": "",
+  "description": "alien-signals with a Preact signals like API",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
