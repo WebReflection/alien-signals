@@ -1,0 +1,28 @@
+{
+  "name": "@webreflection/alien-signals",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "index.js",
+  "module": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["alien-signals", "Preact", "signals", "reactive", "reactivity"],
+  "author": "Andrea Giammarchi",
+  "license": "MIT",
+  "dependencies": {
+    "alien-signals": "^1.0.13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebReflection/alien-signals.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WebReflection/alien-signals/issues"
+  },
+  "homepage": "https://github.com/WebReflection/alien-signals#readme",
+  "description": ""
+}
