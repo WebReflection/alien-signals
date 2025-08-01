@@ -26,6 +26,13 @@ effect(() => {
 });
 
 count.value++;
+
+const greedy = signal(0, { greedy: true });
+effect(() => {
+  console.log('greedy', greedy.value);
+});
+
+greedy.value = greedy.value;
   </script>
 </head>
 </html>

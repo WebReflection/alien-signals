@@ -26,3 +26,9 @@ effect(() => {
 
 count.value++;
 ```
+
+# Extra Feature
+
+A signal created via `signal(value, { greedy: true })` will effect any time the same value is set again, as opposite of ignoring the explicit *set* operation.
+
+Follow this discussion if interest in upstream feedbacks: https://github.com/stackblitz/alien-signals/issues/83

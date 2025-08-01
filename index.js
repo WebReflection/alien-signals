@@ -6,8 +6,9 @@ import {
   pauseTracking, resumeTracking,
 } from 'alien-signals';
 
-export const computed = value => new Computed(value);
-export const signal = value => new State(value);
+const defaults = { greedy: false };
+export const computed = value => new Computed(value, defaults);
+export const signal = (value, options = defaults) => new Signal(_signal, value, options);
 
 /**
  * @template T
@@ -16,11 +17,8 @@ export const signal = value => new State(value);
  */
 export const untracked = fn => {
   pauseTracking();
-  try {
-    return fn();
-  } finally {
-    resumeTracking();
-  }
+  try { return fn() }
+  finally { resumeTracking() }
 };
 
 /**
@@ -31,13 +29,26 @@ export class Signal {
    * @param {(value: T) => T} fn
    * @param {T} value
    */
-  constructor(fn, value) {
-    this._ = fn(value);
+  constructor(fn, value, { greedy = false }) {
+    this.$ = greedy;
+    this._ = fn(greedy ? [value] : value);
+  }
+
+  /** @returns {T} */
+  get value() {
+    const value = this._();
+    return this.$ ? value[0] : value;
+  }
+
+  /** @param {T} value */
+  set value(value) {
+    this._(this.$ ? [value] : value);
   }
 
   /** @returns {T} */
   peek() {
-    return untracked(this._);
+    const value = untracked(this._);
+    return this.$ ? value[0] : value;
   }
 
   /** @returns {T} */
@@ -49,36 +60,14 @@ export class Signal {
 /**
  * @template T
  */
-export class State extends Signal {
-  /**
-   * @param {T} value
-   */
-  constructor(value) {
-    super(_signal, value);
-  }
-
-  /** @returns {T} */
-  get value() {
-    return this._();
-  }
-
-  /** @param {T} value */
-  set value(value) {
-    this._(value);
-  }
-}
-
-/**
- * @template T
- */
 export class Computed extends Signal {
   /** @param {T} value */
-  constructor(value) {
-    super(_computed, value);
+  constructor(value, options) {
+    super(_computed, value, options);
   }
 
   /** @returns {T} */
-  get value() {
-    return this._();
-  }
+  get value() { return this._() }
+
+  set value(_) { throw new Error('Computed values are read-only') }
 }
