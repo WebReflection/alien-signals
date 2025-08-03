@@ -7,8 +7,8 @@ import {
 } from 'alien-signals';
 
 const defaults = { greedy: false };
-export const computed = value => new Computed(value, defaults);
-export const signal = (value, options = defaults) => new Signal(_signal, value, options);
+export const computed = value => new Computed(value);
+export const signal = (value, { greedy = false } = defaults) => greedy ? new Greedy(value) : new Signal(_signal, value);
 
 /**
  * @template T
@@ -29,26 +29,23 @@ export class Signal {
    * @param {(value: T) => T} fn
    * @param {T} value
    */
-  constructor(fn, value, { greedy = false }) {
-    this.$ = greedy;
-    this._ = fn(greedy ? [value] : value);
+  constructor(fn, value) {
+    this._ = fn(value);
   }
 
   /** @returns {T} */
   get value() {
-    const value = this._();
-    return this.$ ? value[0] : value;
+    return this._();
   }
 
   /** @param {T} value */
   set value(value) {
-    this._(this.$ ? [value] : value);
+    this._(value);
   }
 
   /** @returns {T} */
   peek() {
-    const value = untracked(this._);
-    return this.$ ? value[0] : value;
+    return untracked(this._);
   }
 
   /** @returns {T} */
@@ -62,12 +59,20 @@ export class Signal {
  */
 export class Computed extends Signal {
   /** @param {T} value */
-  constructor(value, options) {
-    super(_computed, value, options);
-  }
+  constructor(value) { super(_computed, value) }
 
   /** @returns {T} */
   get value() { return this._() }
 
   set value(_) { throw new Error('Computed values are read-only') }
+}
+
+class Greedy extends Signal {
+  constructor(value) { super(_signal, [value]) }
+
+  get value() { return super.value[0] }
+
+  set value(value) { super.value = [value] }
+
+  peek() { return super.peek()[0] }
 }
