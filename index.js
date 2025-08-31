@@ -4,11 +4,17 @@ import {
   signal as _signal,
   computed as _computed,
   pauseTracking, resumeTracking,
+  startBatch, endBatch,
 } from 'alien-signals';
 
-const defaults = { greedy: false };
+const { assign } = Object;
+const defaults = { deep: false, greedy: false };
 export const computed = value => new Computed(value);
-export const signal = (value, { greedy = false } = defaults) => greedy ? new Greedy(value) : new Signal(_signal, value);
+export const signal = (value, { deep = false, greedy = false } = defaults) => {
+  if (deep) return new Deep(value);
+  if (greedy) return new Greedy(value);
+  return new Signal(_signal, value);
+};
 
 /**
  * @template T
@@ -75,4 +81,26 @@ class Greedy extends Signal {
   set value(value) { super.value = [value] }
 
   peek() { return super.peek()[0] }
+}
+
+class Deep extends Greedy {
+  constructor(value) { super(_signal, new Proxy(value, this)) }
+
+  set(ref, prop, value) {
+    if (ref[prop] !== value) {
+      ref[prop] = value;
+      this.value = ref;
+    }
+    return true;
+  }
+
+  update(batch) {
+    pauseTracking();
+    const value = this.value;
+    resumeTracking();
+    startBatch();
+    assign(value, batch);
+    endBatch();
+    return this;
+  }
 }
