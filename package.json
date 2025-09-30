@@ -21,7 +21,7 @@
   "author": "Andrea Giammarchi",
   "license": "MIT",
   "dependencies": {
-    "alien-signals": "^2.0.6"
+    "alien-signals": "^3.0.0"
   },
   "repository": {
     "type": "git",
