@@ -16,6 +16,7 @@ const double = computed(() => count * 2);
 
 console.assert(count instanceof Signal);  // true
 console.assert(double instanceof Signal); // true
+console.assert(double instanceof Computed); // true
 
 effect(() => {
   console.log('count', count.peek());

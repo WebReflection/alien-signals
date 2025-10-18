@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="module">
 import {
-  Signal,
-  signal, computed,
-  effect, untracked,
-  // all other alien-signals exports
+  Signal, signal,
+  Computed, computed,
+  effect, untracked, batch,
 } from './dist.js';
 
 const count = signal(0);
@@ -17,6 +16,7 @@ const double = computed(() => count * 2);
 
 console.assert(count instanceof Signal);  // true
 console.assert(double instanceof Signal); // true
+console.assert(double instanceof Computed); // true
 
 effect(() => {
   console.log('count', count.peek());
