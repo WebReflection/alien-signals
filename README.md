@@ -6,7 +6,7 @@
 import {
   Signal,
   signal, computed,
-  effect, untracked,
+  effect, untracked, batch,
   // all other alien-signals exports
 } from '@webreflection/alien-signals';
 
