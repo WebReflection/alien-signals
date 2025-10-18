@@ -4,8 +4,8 @@
 
 ```js
 import {
-  Signal,
-  signal, computed,
+  Signal, signal,
+  Computed, computed,
   effect, untracked, batch,
   // all other alien-signals exports
 } from '@webreflection/alien-signals';
