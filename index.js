@@ -3,7 +3,7 @@ export * from 'alien-signals';
 import {
   signal as _signal,
   computed as _computed,
-  pauseTracking, resumeTracking,
+  setActiveSub, startBatch, endBatch
 } from 'alien-signals';
 
 const defaults = { greedy: false };
@@ -11,14 +11,27 @@ export const computed = value => new Computed(value);
 export const signal = (value, { greedy = false } = defaults) => greedy ? new Greedy(value) : new Signal(_signal, value);
 
 /**
+ * @param {function(): void} fn 
+ */
+export const batch = fn => {
+  startBatch();
+  try {
+    fn();
+  }
+  finally {
+    endBatch();
+  }
+};
+
+/**
  * @template T
  * @param {function(): T} fn
  * @returns {T}
  */
 export const untracked = fn => {
-  pauseTracking();
+  const sub = setActiveSub(void 0);
   try { return fn() }
-  finally { resumeTracking() }
+  finally { setActiveSub(sub) }
 };
 
 /**
@@ -63,8 +76,6 @@ export class Computed extends Signal {
 
   /** @returns {T} */
   get value() { return this._() }
-
-  set value(_) { throw new Error('Computed values are read-only') }
 }
 
 class Greedy extends Signal {

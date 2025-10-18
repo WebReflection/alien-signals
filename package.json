@@ -21,7 +21,7 @@
   "author": "Andrea Giammarchi",
   "license": "MIT",
   "dependencies": {
-    "alien-signals": "^2.0.6"
+    "alien-signals": "^3.0.1"
   },
   "repository": {
     "type": "git",
@@ -33,8 +33,8 @@
   "homepage": "https://github.com/WebReflection/alien-signals#readme",
   "description": "alien-signals with a Preact signals like API",
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^0.4.4",
-    "rollup": "^4.46.2"
+    "rollup": "^4.52.5"
   }
 }
