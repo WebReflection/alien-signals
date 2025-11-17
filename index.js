@@ -65,6 +65,16 @@ export class Signal {
   valueOf() {
     return this.value;
   }
+  
+  /** @returns {T} */
+  toString() {
+    return this.value;
+  }
+
+  /** @returns {T} */
+  toJSON() {
+    return this.value
+  }
 }
 
 /**
@@ -87,3 +97,4 @@ class Greedy extends Signal {
 
   peek() { return super.peek()[0] }
 }
+
