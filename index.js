@@ -3,6 +3,7 @@ export * from 'alien-signals';
 import {
   signal as _signal,
   computed as _computed,
+  effect as _effect,
   setActiveSub, startBatch, endBatch
 } from 'alien-signals';
 
@@ -22,6 +23,15 @@ export const batch = fn => {
     endBatch();
   }
 };
+
+/**
+ * @param {function(): any} fn
+ * @returns {function(): void}
+ */
+export const effect = fn => {
+  let out, dispose = _effect(() => (typeof out === 'function' && out(), out = fn()));
+  return () => (typeof out === 'function' && out(), dispose());
+}
 
 /**
  * @template T
@@ -97,4 +107,5 @@ class Greedy extends Signal {
 
   peek() { return super.peek()[0] }
 }
+
 
