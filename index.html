@@ -18,14 +18,18 @@ console.assert(count instanceof Signal);  // true
 console.assert(double instanceof Signal); // true
 console.assert(double instanceof Computed); // true
 
-effect(() => {
+const dispose = effect(() => {
   console.log('count', count.peek());
   //                  no subscription
 
   console.log('double', double.value);
+
+  return () => console.log('cleanup');
 });
 
+console.log('count.value++')
 count.value++;
+dispose()
 
 const greedy = signal(count.value, { greedy: true });
 effect(() => {

@@ -3,6 +3,7 @@ export * from 'alien-signals';
 import {
   signal as _signal,
   computed as _computed,
+  effect as _effect,
   setActiveSub, startBatch, endBatch
 } from 'alien-signals';
 
@@ -11,7 +12,7 @@ export const computed = value => new Computed(value);
 export const signal = (value, { greedy = false } = defaults) => greedy ? new Greedy(value) : new Signal(_signal, value);
 
 /**
- * @param {function(): void} fn 
+ * @param {function(): void} fn
  */
 export const batch = fn => {
   startBatch();
@@ -22,6 +23,15 @@ export const batch = fn => {
     endBatch();
   }
 };
+
+/**
+ * @param {function(): any} fn
+ * @returns {function(): void}
+ */
+export const effect = fn => {
+  let out, dispose = _effect(() => (typeof out === 'function' && out(), out = fn()));
+  return () => (typeof out === 'function' && out(), dispose());
+}
 
 /**
  * @template T
@@ -64,6 +74,16 @@ export class Signal {
   /** @returns {T} */
   valueOf() {
     return this.value;
+  }
+
+  /** @returns {T} */
+  toString() {
+    return this.value;
+  }
+
+  /** @returns {T} */
+  toJSON() {
+    return this.value
   }
 }
 
