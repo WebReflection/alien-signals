@@ -12,7 +12,7 @@ export const computed = value => new Computed(value);
 export const signal = (value, { greedy = false } = defaults) => greedy ? new Greedy(value) : new Signal(_signal, value);
 
 /**
- * @param {function(): void} fn 
+ * @param {function(): void} fn
  */
 export const batch = fn => {
   startBatch();
@@ -75,7 +75,7 @@ export class Signal {
   valueOf() {
     return this.value;
   }
-  
+
   /** @returns {T} */
   toString() {
     return this.value;
@@ -107,5 +107,3 @@ class Greedy extends Signal {
 
   peek() { return super.peek()[0] }
 }
-
-
